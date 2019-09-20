@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -22,6 +23,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     /**
      * Creates new form VentanaInicio
      */
+    ArrayList <ProductionRegla> gramaticas=new ArrayList<ProductionRegla>();
     public VentanaInicio() {
         initComponents();
     }
@@ -116,7 +118,14 @@ public class VentanaInicio extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if(verficarTerminal()){
-           System.out.println("Esta correcto los Terminales");
+            if(verificarNoTerminales()){
+                System.out.println("Comprovando las reglas de la gramatica");
+                                
+            }else{
+                JOptionPane.showMessageDialog(null, "en la parte derecha despues\ndel = no debe tener mas = ");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Los Terminales solo tienen que ser Mayusculas");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -209,25 +218,15 @@ public class VentanaInicio extends javax.swing.JFrame {
     private boolean verficarTerminal() {
         boolean estado=false;
         String []gramatica=jTextPane1.getText().split("\n");
-        int cv=0;
-        for (String x : gramatica) {
-            if(esCorrecto(x)){
-                cv++;
+        for(String n:gramatica){
+            String terminal=n.substring(0, n.indexOf("="));
+            if(terminalMayuscula(terminal)){
+                gramaticas.add(new ProductionRegla(terminal,n.substring(n.indexOf("=")+1)));
+                estado=true;
+            }else{
+                estado=false;
+                break;
             }
-        }
-        if(cv==gramatica.length){
-            System.out.println(cv+"---"+gramatica.length);
-            for(String n:gramatica){
-                String terminal=n.substring(0, n.indexOf("="));
-                if(terminalMayuscula(terminal)){
-                    System.out.println("correcto");
-                }else{
-                    System.out.println("Incorrecto");
-                }
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "hay datos incorrectos");
         }
         return estado;
     }
@@ -256,6 +255,18 @@ public class VentanaInicio extends javax.swing.JFrame {
             }else{
                 estado=true;
             }
+        }
+        return estado;
+    }
+    private boolean verificarNoTerminales(){
+        boolean estado=false;
+        for(ProductionRegla nt:gramaticas){
+            if(nt.getNoTerminal().indexOf("=")>0){
+                estado=false;
+                break;
+            }else{
+                estado=true;
+            }    
         }
         return estado;
     }

@@ -12,13 +12,13 @@ import java.util.ArrayList;
  * @author hp
  */
 public class Metodos {
-    public static void main(String[] args) {
+    /**public static void main(String[] args) {
         String [] p = {"hola","como","estas","hola","como","Hola","hola"};
         String [] r = elimRepet(p);
         for (String x : r) {
             System.out.println(x);
         }
-    }
+    }**/
     static String[] elimRepet(String [] pal){
         String [] res;
         String aux ="";
